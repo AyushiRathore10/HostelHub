@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI  
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -111,3 +111,5 @@ def get_all_students():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("Backend.app.main:app", host="127.0.0.1", port=8000, reload=True)
+
+###its my first git practice 

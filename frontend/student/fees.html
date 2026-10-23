@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - Fee Status</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation for Student -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Student Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="room.html" class="nav-item">🛏️ My Room</a>
+                <a href="fees.html" class="nav-item active">💳 Fee Status</a>
+                <a href="complaints.html" class="nav-item">📝 My Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>Fee Status & Invoices</h1>
+                    <p>Track your semester fee breakdown, outstanding dues, and download receipts</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">🎓</span>
+                    <span class="username">Rahul Sharma (A-204)</span>
+                </div>
+            </header>
+
+            <!-- 3. Fee Summary Cards (3 Cards) -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">💳</div>
+                    <div class="stat-info">
+                        <h3>Total Semester Fee</h3>
+                        <p class="stat-number">₹30,000</p>
+                        <span class="stat-subtext">Hostel & Mess Fee</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💵</div>
+                    <div class="stat-info">
+                        <h3>Amount Paid</h3>
+                        <p class="stat-number">₹30,000</p>
+                        <span class="stat-subtext text-success">Verified by Accounts</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3>Remaining Balance</h3>
+                        <p class="stat-number">₹0</p>
+                        <span class="stat-subtext text-success">No Pending Dues</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 4. Payment History & Receipts Table -->
+            <section class="card-box">
+                <div class="section-header">
+                    <h2>📄 Payment Receipts & Transactions</h2>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Receipt ID</th>
+                            <th>Description</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Mode</th>
+                            <th>Date Paid</th>
+                            <th>Status</th>
+                            <th>Receipt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>#REC-1001</strong></td>
+                            <td>Full Semester 2026 - Room & Mess Fee</td>
+                            <td>₹30,000</td>
+                            <td>Online (UPI / NetBanking)</td>
+                            <td>05 Oct 2026</td>
+                            <td><span class="badge badge-resolved">Paid</span></td>
+                            <td>
+                                <button class="btn-sm">📥 Download</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>#REC-0842</strong></td>
+                            <td>Hostel Security Deposit (Refundable)</td>
+                            <td>₹5,000</td>
+                            <td>Debit Card</td>
+                            <td>15 Jul 2026</td>
+                            <td><span class="badge badge-resolved">Paid</span></td>
+                            <td>
+                                <button class="btn-sm">📥 Download</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - My Complaints</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation for Student -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Student Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="room.html" class="nav-item">🛏️ My Room</a>
+                <a href="fees.html" class="nav-item">💳 Fee Status</a>
+                <a href="complaints.html" class="nav-item active">📝 My Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>My Complaints & Requests</h1>
+                    <p>Report hostel maintenance issues and track ticket resolution in real time</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">🎓</span>
+                    <span class="username">Rahul Sharma (A-204)</span>
+                </div>
+            </header>
+
+            <!-- 3. Two Column Layout: Complaint Form + Active Tickets -->
+            <div class="content-row">
+
+                <!-- Left Column: File Complaint Form -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>📝 Submit a New Complaint</h2>
+                    </div>
+
+                    <form id="complaint-form">
+                        <div class="form-group">
+                            <label for="complaint-category">Issue Category</label>
+                            <select id="complaint-category" class="form-control" required>
+                                <option value="" disabled selected>-- Select category --</option>
+                                <option value="electrical">Electrical (Fan, Light, Switch)</option>
+                                <option value="plumbing">Plumbing (Tap, Leakage, Flush)</option>
+                                <option value="internet">Internet / Wi-Fi</option>
+                                <option value="cleanliness">Room / Floor Cleanliness</option>
+                                <option value="furniture">Furniture / Bed</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="complaint-room">Room Number</label>
+                            <input type="text" id="complaint-room" class="form-control" value="Room A-204" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="complaint-title">Subject / Short Title</label>
+                            <input type="text" id="complaint-title" class="form-control"
+                                placeholder="e.g. Ceiling fan making loud noise" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="complaint-desc">Detailed Description</label>
+                            <textarea id="complaint-desc" class="form-control"
+                                placeholder="Describe your issue in detail so staff can bring the right tools..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            🚀 Submit Complaint
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Right Column: Status Tracker for Active Tickets -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>📋 My Previous Complaints</h2>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <!-- Ticket 1: In Progress -->
+                        <div class="complaint-card">
+                            <div class="complaint-header">
+                                <span class="complaint-id">Ticket #CMP-101</span>
+                                <span class="badge badge-progress">In Progress</span>
+                            </div>
+                            <h3 class="complaint-title">Ceiling fan making loud noise</h3>
+                            <p class="complaint-desc">Fan regulator is not working and blades vibrating heavily.</p>
+                            <div class="complaint-meta">
+                                <span>Category: Electrical</span> • <span>Filed on: Oct 11</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket 2: Resolved -->
+                        <div class="complaint-card">
+                            <div class="complaint-header">
+                                <span class="complaint-id">Ticket #CMP-084</span>
+                                <span class="badge badge-resolved">Resolved</span>
+                            </div>
+                            <h3 class="complaint-title">Washroom door latch loose</h3>
+                            <p class="complaint-desc">Carpenter fixed new screw latch and tested lock.</p>
+                            <div class="complaint-meta">
+                                <span>Category: Furniture</span> • <span>Resolved on: Oct 02</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

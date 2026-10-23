@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - My Room Details</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation for Student -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Student Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="room.html" class="nav-item active">🛏️ My Room</a>
+                <a href="fees.html" class="nav-item">💳 Fee Status</a>
+                <a href="complaints.html" class="nav-item">📝 My Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>My Room Details</h1>
+                    <p>View your assigned room, bed number, amenities, and roommate information</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">🎓</span>
+                    <span class="username">Rahul Sharma (A-204)</span>
+                </div>
+            </header>
+
+            <!-- 3. Room & Roommate Details (2 Column Grid) -->
+
+            <!-- 3. Room & Roommate Details (Ab bina inline CSS ke, 100% clean classes!) -->
+            <div class="content-row">
+
+                <!-- Room Specifications Card -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>🛏️ Room Specifications</h2>
+                    </div>
+
+                    <div class="info-list">
+                        <div class="info-row">
+                            <span class="info-label">Room Number</span>
+                            <strong>Room A-204</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Block & Floor</span>
+                            <strong>Block A, 2nd Floor</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Your Assigned Bed</span>
+                            <strong>Bed #2 (Window side)</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Room Type</span>
+                            <strong>Double Sharing (2 Beds)</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Room Amenities</span>
+                            <span>Fan, 2 Study Tables, 2 Cupboards, Wi-Fi</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Roommate Profile Card -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>🧑‍🎓 Roommate Information</h2>
+                    </div>
+
+                    <div class="profile-header">
+                        <div class="profile-avatar-lg">👨‍💻</div>
+                        <h3 class="profile-name">Amit Patel</h3>
+                        <p class="profile-subtitle">Assigned Bed #1</p>
+                    </div>
+
+                    <div class="info-list">
+                        <div class="info-row">
+                            <span class="info-label">Roll Number</span>
+                            <strong>CS202402</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Course / Branch</span>
+                            <strong>B.Tech CSE (2nd Year)</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email</span>
+                            <strong>amit@example.com</strong>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Contact Phone</span>
+                            <strong>+91 98765 12345</strong>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

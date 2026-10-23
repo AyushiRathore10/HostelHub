@@ -1,0 +1,165 @@
+/* 1. Global Reset & Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 2. Main Login Card Container */
+.login-container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 3. Header / Branding */
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-header h1 {
+    color: #1e3c72;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* 4. Role Selection Cards */
+.role-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.role-card {
+    flex: 1;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background-color: #f9f9f9;
+}
+
+.role-card:hover {
+    border-color: #2a5298;
+    transform: translateY(-2px);
+}
+
+/* When a card is active/selected */
+.role-card.active {
+    border-color: #1e3c72;
+    background-color: #eef4ff;
+    box-shadow: 0 4px 10px rgba(30, 60, 114, 0.15);
+}
+
+.role-icon {
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.role-card h3 {
+    font-size: 15px;
+    color: #222;
+}
+
+.role-card p {
+    font-size: 11px;
+    color: #777;
+    margin-top: 3px;
+}
+
+/* 5. Login Form Styling */
+#form-heading {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+}
+
+/* 6. Submit Button */
+#login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 8px;
+}
+
+#login-btn:hover {
+    background: #2a5298;
+}
+
+#login-btn:active {
+    transform: scale(0.98);
+}
+
+/* 7. Error Message */
+#error-message {
+    color: #d93025;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 12px;
+    min-height: 18px;
+}

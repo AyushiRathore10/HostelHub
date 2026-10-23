@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - Room Management</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Admin Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="students.html" class="nav-item">👥 Students</a>
+                <a href="rooms.html" class="nav-item active">🛏️ Rooms</a>
+                <a href="fees.html" class="nav-item">💳 Fees & Payments</a>
+                <a href="complaints.html" class="nav-item">📝 Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>Room Management & Allocation</h1>
+                    <p>Monitor room capacity, bed vacancies, and student room allocations</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">👨‍💼</span>
+                    <span class="username">Admin User</span>
+                </div>
+            </header>
+            <!-- 3. Toolbar (Clean classes, no inline CSS) -->
+            <div class="table-section">
+                <div class="toolbar">
+                    <!-- Search & Filter -->
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="room-search" class="search-input" placeholder="🔍 Search room no...">
+                        <select class="filter-select">
+                            <option value="all">All Blocks</option>
+                            <option value="A">Block A</option>
+                            <option value="B">Block B</option>
+                            <option value="C">Block C</option>
+                        </select>
+                    </div>
+
+                    <!-- Add Room Button -->
+                    <button id="add-room-btn" class="btn-primary">
+                        ➕ Add New Room
+                    </button>
+                </div>
+
+                <!-- 4. Rooms Table (Clean Buttons) -->
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Room No</th>
+                            <th>Block & Floor</th>
+                            <th>Room Type</th>
+                            <th>Capacity</th>
+                            <th>Allocated Students</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>A-101</strong></td>
+                            <td>Block A (1st Floor)</td>
+                            <td>Double Sharing</td>
+                            <td>2 Beds</td>
+                            <td><em>None (Empty)</em></td>
+                            <td><span class="badge badge-resolved">2 Beds Available</span></td>
+                            <td>
+                                <button class="btn-sm btn-allocate">Allocate</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>A-204</strong></td>
+                            <td>Block A (2nd Floor)</td>
+                            <td>Double Sharing</td>
+                            <td>2 Beds</td>
+                            <td>Rahul Sharma, Amit Patel</td>
+                            <td><span class="badge badge-pending">Full (Occupied)</span></td>
+                            <td>
+                                <button class="btn-sm btn-manage">Manage</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>B-105</strong></td>
+                            <td>Block B (1st Floor)</td>
+                            <td>Double Sharing</td>
+                            <td>2 Beds</td>
+                            <td>Priya Verma</td>
+                            <td><span class="badge badge-progress">1 Bed Available</span></td>
+                            <td>
+                                <button class="btn-sm btn-allocate">Allocate</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>C-302</strong></td>
+                            <td>Block C (3rd Floor)</td>
+                            <td>Triple Sharing</td>
+                            <td>3 Beds</td>
+                            <td>Rohan Gupta, Vikas Jain</td>
+                            <td><span class="badge badge-progress">1 Bed Available</span></td>
+                            <td>
+                                <button class="btn-sm btn-allocate">Allocate</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

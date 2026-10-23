@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - Login</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <!-- Header -->
+        <div class="login-header">
+            <h1>HostelHub</h1>
+            <p>Hostel Management System</p>
+        </div>
+
+        <!-- Step 1: Two Role Cards -->
+        <p class="section-title">Select your role to continue:</p>
+
+        <div class="role-container">
+            <!-- Admin Card -->
+            <div class="role-card" id="admin-card">
+                <div class="role-icon">🛡️</div>
+                <h3>Admin</h3>
+                <p>Warden & Staff</p>
+            </div>
+
+            <!-- Student Card -->
+            <div class="role-card" id="student-card">
+                <div class="role-icon">🎓</div>
+                <h3>Student</h3>
+                <p>Hostel Resident</p>
+            </div>
+        </div>
+
+        <!-- Step 2: Login Form (Jo role select hoga uska login hoga) -->
+        <form id="login-form">
+            <!-- Hidden field jo yaad rakhega ki kaun sa role select hua hai -->
+            <input type="hidden" id="selected-role" value="student">
+
+            <!-- Title jo dynamically batayega kiska login hai -->
+            <h2 id="form-heading">Student Login</h2>
+
+            <div class="form-group">
+                <label for="username">Username / Email:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username or email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" id="login-btn">Login</button>
+
+            <p id="error-message"></p>
+        </form>
+
+    </div>
+    <script src="login.js"></script>
+
+
+</body>
+
+</html>

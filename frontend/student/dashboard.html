@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - Student Dashboard</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation for Student -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Student Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+                <a href="room.html" class="nav-item">🛏️ My Room</a>
+                <a href="fees.html" class="nav-item">💳 Fee Status</a>
+                <a href="complaints.html" class="nav-item">📝 My Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>Student Portal</h1>
+                    <p>Welcome back, Rahul Sharma!</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">🎓</span>
+                    <span class="username">Rahul Sharma (A-204)</span>
+                </div>
+            </header>
+
+            <!-- 3. Four Student Info Cards -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">🛏️</div>
+                    <div class="stat-info">
+                        <h3>Assigned Room</h3>
+                        <p class="stat-number">Room A-204</p>
+                        <span class="stat-subtext">Block A, 2nd Floor (Bed #2)</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3>Roommate</h3>
+                        <p class="stat-number">Amit Patel</p>
+                        <span class="stat-subtext">B.Tech CSE - 2nd Year</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💳</div>
+                    <div class="stat-info">
+                        <h3>Fee Status</h3>
+                        <p class="stat-number">₹0 Due</p>
+                        <span class="stat-subtext text-success">All Dues Cleared</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-info">
+                        <h3>My Complaints</h3>
+                        <p class="stat-number">1 Active</p>
+                        <span class="stat-subtext text-warning">Under Review</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 4. Lower Sections: Notice Board & Recent Complaint Status -->
+            <div class="content-row">
+
+                <!-- Notice Board -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>📢 Hostel Notice Board</h2>
+                    </div>
+                    <div class="notice-list">
+                        <div class="notice-item">
+                            <span class="notice-date">Oct 12</span>
+                            <div class="notice-body">
+                                <h4>Wi-Fi Maintenance Notice</h4>
+                                <p>Wi-Fi services in Block A will undergo maintenance from 2:00 PM to 4:00 PM today.</p>
+                            </div>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-date">Oct 10</span>
+                            <div class="notice-body">
+                                <h4>Mess Menu Update</h4>
+                                <p>Special festival dinner scheduled this coming Friday at 8:00 PM.</p>
+                            </div>
+                        </div>
+                        <div class="notice-item">
+                            <span class="notice-date">Oct 05</span>
+                            <div class="notice-body">
+                                <h4>Hostel Night Curfew Reminder</h4>
+                                <p>All students must check in before 9:30 PM at the main hostel gate.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Recent Complaint -->
+                <section class="card-box">
+                    <div class="section-header">
+                        <h2>🛠️ My Active Complaint</h2>
+                    </div>
+                    <div class="complaint-card">
+                        <div class="complaint-header">
+                            <span class="complaint-id">Ticket #101</span>
+                            <span class="badge badge-progress">In Progress</span>
+                        </div>
+                        <h3 class="complaint-title">Ceiling fan making loud noise</h3>
+                        <p class="complaint-desc">Fan regulator is not working and blades vibrating heavily.</p>
+                        <div class="complaint-meta">
+                            <span>Category: Electrical</span> • <span>Filed on: Oct 11</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

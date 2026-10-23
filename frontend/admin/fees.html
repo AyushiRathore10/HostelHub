@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostelHub - Fee Management</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>🏢 HostelHub</h2>
+                <span class="role-badge">Admin Portal</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="students.html" class="nav-item">👥 Students</a>
+                <a href="rooms.html" class="nav-item">🛏️ Rooms</a>
+                <a href="fees.html" class="nav-item active">💳 Fees & Payments</a>
+                <a href="complaints.html" class="nav-item">📝 Complaints</a>
+                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- 2. Main Content Area -->
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1>Fee & Payment Management</h1>
+                    <p>Track student hostel fees, outstanding dues, and payment receipts</p>
+                </div>
+                <div class="user-profile">
+                    <span class="avatar">👨‍💼</span>
+                    <span class="username">Admin User</span>
+                </div>
+            </header>
+
+            <!-- 3. Toolbar (Search, Filter, Record Payment) -->
+            <div class="table-section">
+                <div class="toolbar">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="fee-search" class="search-input"
+                            placeholder="🔍 Search student or receipt...">
+                        <select class="filter-select">
+                            <option value="all">All Status</option>
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <button id="add-fee-btn" class="btn-primary">
+                        ➕ Record Payment
+                    </button>
+                </div>
+
+                <!-- 4. Fee Transactions Table (Dummy Data) -->
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Receipt ID</th>
+                            <th>Student Name</th>
+                            <th>Room No</th>
+                            <th>Total Fee</th>
+                            <th>Amount Paid</th>
+                            <th>Due Balance</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>#REC-1001</strong></td>
+                            <td>Rahul Sharma (CS202401)</td>
+                            <td>A-204</td>
+                            <td>₹30,000</td>
+                            <td>₹30,000</td>
+                            <td>₹0</td>
+                            <td><span class="badge badge-resolved">Paid</span></td>
+                            <td>05 Oct 2026</td>
+                            <td>
+                                <button class="btn-sm btn-manage">View Receipt</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>#REC-1002</strong></td>
+                            <td>Amit Patel (CS202402)</td>
+                            <td>A-204</td>
+                            <td>₹30,000</td>
+                            <td>₹30,000</td>
+                            <td>₹0</td>
+                            <td><span class="badge badge-resolved">Paid</span></td>
+                            <td>08 Oct 2026</td>
+                            <td>
+                                <button class="btn-sm btn-manage">View Receipt</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>#REC-1003</strong></td>
+                            <td>Priya Verma (EC202415)</td>
+                            <td>B-105</td>
+                            <td>₹30,000</td>
+                            <td>₹15,000</td>
+                            <td>₹15,000</td>
+                            <td><span class="badge badge-pending">Pending</span></td>
+                            <td>10 Oct 2026</td>
+                            <td>
+                                <button class="btn-sm btn-allocate">Collect Due</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>#REC-1004</strong></td>
+                            <td>Rohan Gupta (ME202408)</td>
+                            <td>C-302</td>
+                            <td>₹30,000</td>
+                            <td>₹30,000</td>
+                            <td>₹0</td>
+                            <td><span class="badge badge-resolved">Paid</span></td>
+                            <td>11 Oct 2026</td>
+                            <td>
+                                <button class="btn-sm btn-manage">View Receipt</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

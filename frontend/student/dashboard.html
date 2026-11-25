@@ -1,146 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostelHub - Student Dashboard</title>
     <link rel="stylesheet" href="student.css">
 </head>
-
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- 1. Left Sidebar Navigation for Student -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>🏢 HostelHub</h2>
-                <span class="role-badge">Student Portal</span>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🏢 HostelHub</h2>
+            <span class="role-badge">Student Portal</span>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html"  class="nav-item active">📊 Dashboard</a>
+            <a href="room.html"       class="nav-item">🛏️ My Room</a>
+            <a href="fees.html"       class="nav-item">💳 Fee Status</a>
+            <a href="complaints.html" class="nav-item">📝 My Complaints</a>
+            <a href="../index.html"   class="nav-item logout-item" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1>Student Portal</h1>
+                <p>Welcome back, <span id="student-greeting">Student</span>!</p>
             </div>
+            <div class="user-profile">
+                <span class="avatar">🎓</span>
+                <span class="username" id="topbar-name">Student</span>
+            </div>
+        </header>
 
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
-                <a href="room.html" class="nav-item">🛏️ My Room</a>
-                <a href="fees.html" class="nav-item">💳 Fee Status</a>
-                <a href="complaints.html" class="nav-item">📝 My Complaints</a>
-                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
-            </nav>
-        </aside>
-
-        <!-- 2. Main Content Area -->
-        <main class="main-content">
-
-            <!-- Top Navbar -->
-            <header class="topbar">
-                <div class="topbar-title">
-                    <h1>Student Portal</h1>
-                    <p>Welcome back, Rahul Sharma!</p>
+        <!-- Info Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🛏️</div>
+                <div class="stat-info">
+                    <h3>Assigned Room</h3>
+                    <p class="stat-number" id="stat-room">...</p>
+                    <span class="stat-subtext" id="stat-room-sub">Loading...</span>
                 </div>
-                <div class="user-profile">
-                    <span class="avatar">🎓</span>
-                    <span class="username">Rahul Sharma (A-204)</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎓</div>
+                <div class="stat-info">
+                    <h3>Roll Number</h3>
+                    <p class="stat-number" id="stat-roll">...</p>
+                    <span class="stat-subtext" id="stat-course">Loading...</span>
                 </div>
-            </header>
-
-            <!-- 3. Four Student Info Cards -->
-            <section class="stats-grid">
-
-                <div class="stat-card">
-                    <div class="stat-icon">🛏️</div>
-                    <div class="stat-info">
-                        <h3>Assigned Room</h3>
-                        <p class="stat-number">Room A-204</p>
-                        <span class="stat-subtext">Block A, 2nd Floor (Bed #2)</span>
-                    </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💳</div>
+                <div class="stat-info">
+                    <h3>Fee Status</h3>
+                    <p class="stat-number" id="stat-fee">...</p>
+                    <span class="stat-subtext" id="stat-fee-sub">Loading...</span>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-info">
-                        <h3>Roommate</h3>
-                        <p class="stat-number">Amit Patel</p>
-                        <span class="stat-subtext">B.Tech CSE - 2nd Year</span>
-                    </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <h3>My Complaints</h3>
+                    <p class="stat-number" id="stat-complaints">...</p>
+                    <span class="stat-subtext" id="stat-complaints-sub">Loading...</span>
                 </div>
+            </div>
+        </section>
 
-                <div class="stat-card">
-                    <div class="stat-icon">💳</div>
-                    <div class="stat-info">
-                        <h3>Fee Status</h3>
-                        <p class="stat-number">₹0 Due</p>
-                        <span class="stat-subtext text-success">All Dues Cleared</span>
-                    </div>
+        <!-- Notice Board + Active Complaint -->
+        <div class="content-row">
+
+            <section class="card-box">
+                <div class="section-header">
+                    <h2>📢 Hostel Notice Board</h2>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-info">
-                        <h3>My Complaints</h3>
-                        <p class="stat-number">1 Active</p>
-                        <span class="stat-subtext text-warning">Under Review</span>
-                    </div>
+                <div class="notice-list" id="notice-list">
+                    <p style="color:#94a3b8;font-size:14px;">Loading notices...</p>
                 </div>
-
             </section>
 
-            <!-- 4. Lower Sections: Notice Board & Recent Complaint Status -->
-            <div class="content-row">
+            <section class="card-box">
+                <div class="section-header">
+                    <h2>🛠️ My Latest Complaint</h2>
+                </div>
+                <div id="latest-complaint">
+                    <p style="color:#94a3b8;font-size:14px;">Loading...</p>
+                </div>
+            </section>
 
-                <!-- Notice Board -->
-                <section class="card-box">
-                    <div class="section-header">
-                        <h2>📢 Hostel Notice Board</h2>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    const API = 'http://127.0.0.1:8000';
+
+    const role    = localStorage.getItem('userRole');
+    const name    = localStorage.getItem('userName');
+    const rollNo  = localStorage.getItem('userRoll');
+
+    if (!role || role !== 'student') {
+        window.location.href = '../index.html';
+    }
+
+    document.getElementById('student-greeting').textContent = name || 'Student';
+    document.getElementById('topbar-name').textContent      = name || 'Student';
+
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault(); localStorage.clear(); window.location.href = '../index.html';
+    });
+
+    // Load student profile
+    async function loadProfile() {
+        if (!rollNo) return;
+        try {
+            const res  = await fetch(`${API}/api/students/${rollNo}`);
+            const data = await res.json();
+            if (!data.success) return;
+            const s = data.student;
+
+            document.getElementById('stat-room').textContent     = s.room_no || 'Not assigned';
+            document.getElementById('stat-room-sub').textContent = `Block, Bed #${s.bed_no || '-'}`;
+            document.getElementById('stat-roll').textContent     = s.roll_no;
+            document.getElementById('stat-course').textContent   = `${s.course || ''} - Year ${s.year || ''}`;
+
+            const feeEl    = document.getElementById('stat-fee');
+            const feeSubEl = document.getElementById('stat-fee-sub');
+            if (s.fee_status === 'Paid') {
+                feeEl.textContent    = '₹0 Due';
+                feeSubEl.textContent = 'All dues cleared ✅';
+                feeSubEl.className   = 'stat-subtext text-success';
+            } else {
+                feeEl.textContent    = 'Pending';
+                feeSubEl.textContent = 'Fee due ⚠️';
+                feeSubEl.className   = 'stat-subtext text-warning';
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    // Load notices
+    async function loadNotices() {
+        try {
+            const res  = await fetch(`${API}/api/notices`);
+            const data = await res.json();
+            const list = document.getElementById('notice-list');
+            if (!data.notices || data.notices.length === 0) {
+                list.innerHTML = '<p style="color:#94a3b8;font-size:14px;">No notices posted yet.</p>';
+                return;
+            }
+            list.innerHTML = data.notices.map(n => {
+                const date = new Date(n.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
+                return `
+                <div class="notice-item">
+                    <span class="notice-date">${date}</span>
+                    <div class="notice-body">
+                        <h4>${n.title}</h4>
+                        <p>${n.body}</p>
                     </div>
-                    <div class="notice-list">
-                        <div class="notice-item">
-                            <span class="notice-date">Oct 12</span>
-                            <div class="notice-body">
-                                <h4>Wi-Fi Maintenance Notice</h4>
-                                <p>Wi-Fi services in Block A will undergo maintenance from 2:00 PM to 4:00 PM today.</p>
-                            </div>
-                        </div>
-                        <div class="notice-item">
-                            <span class="notice-date">Oct 10</span>
-                            <div class="notice-body">
-                                <h4>Mess Menu Update</h4>
-                                <p>Special festival dinner scheduled this coming Friday at 8:00 PM.</p>
-                            </div>
-                        </div>
-                        <div class="notice-item">
-                            <span class="notice-date">Oct 05</span>
-                            <div class="notice-body">
-                                <h4>Hostel Night Curfew Reminder</h4>
-                                <p>All students must check in before 9:30 PM at the main hostel gate.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                </div>`;
+            }).join('');
+        } catch(e) { console.error(e); }
+    }
 
-                <!-- My Recent Complaint -->
-                <section class="card-box">
-                    <div class="section-header">
-                        <h2>🛠️ My Active Complaint</h2>
-                    </div>
-                    <div class="complaint-card">
-                        <div class="complaint-header">
-                            <span class="complaint-id">Ticket #101</span>
-                            <span class="badge badge-progress">In Progress</span>
-                        </div>
-                        <h3 class="complaint-title">Ceiling fan making loud noise</h3>
-                        <p class="complaint-desc">Fan regulator is not working and blades vibrating heavily.</p>
-                        <div class="complaint-meta">
-                            <span>Category: Electrical</span> • <span>Filed on: Oct 11</span>
-                        </div>
-                    </div>
-                </section>
+    // Load latest complaint
+    async function loadLatestComplaint() {
+        if (!rollNo) return;
+        try {
+            const res  = await fetch(`${API}/api/complaints/student/${rollNo}`);
+            const data = await res.json();
+            const el   = document.getElementById('latest-complaint');
+            const compCountEl = document.getElementById('stat-complaints');
+            const compSubEl   = document.getElementById('stat-complaints-sub');
 
-            </div>
+            compCountEl.textContent = data.complaints.length;
 
-        </main>
+            const active = data.complaints.filter(c => c.status !== 'Resolved');
+            compSubEl.textContent = active.length > 0 ? `${active.length} Active` : 'All resolved ✅';
+            compSubEl.className   = active.length > 0 ? 'stat-subtext text-warning' : 'stat-subtext text-success';
 
-    </div>
+            if (data.complaints.length === 0) {
+                el.innerHTML = '<p style="color:#94a3b8;font-size:14px;">No complaints filed yet.</p>';
+                return;
+            }
+            const c = data.complaints[0];
+            const badgeClass = c.status === 'Resolved'    ? 'badge-resolved'
+                             : c.status === 'In Progress' ? 'badge-progress'
+                             : 'badge-pending';
+            el.innerHTML = `
+            <div class="complaint-card">
+                <div class="complaint-header">
+                    <span class="complaint-id">Ticket #CMP-${c.id}</span>
+                    <span class="badge ${badgeClass}">${c.status}</span>
+                </div>
+                <h3 class="complaint-title">${c.title}</h3>
+                <p class="complaint-desc">${c.description}</p>
+                <div class="complaint-meta">
+                    <span>Category: ${c.category}</span> •
+                    <span>Filed: ${new Date(c.date_filed).toLocaleDateString('en-IN')}</span>
+                </div>
+            </div>`;
+        } catch(e) { console.error(e); }
+    }
+
+    loadProfile();
+    loadNotices();
+    loadLatestComplaint();
+</script>
 
 </body>
-
 </html>

@@ -1,129 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostelHub - Fee Status</title>
     <link rel="stylesheet" href="student.css">
 </head>
-
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- 1. Left Sidebar Navigation for Student -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>🏢 HostelHub</h2>
-                <span class="role-badge">Student Portal</span>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🏢 HostelHub</h2>
+            <span class="role-badge">Student Portal</span>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html"  class="nav-item">📊 Dashboard</a>
+            <a href="room.html"       class="nav-item">🛏️ My Room</a>
+            <a href="fees.html"       class="nav-item active">💳 Fee Status</a>
+            <a href="complaints.html" class="nav-item">📝 My Complaints</a>
+            <a href="../index.html"   class="nav-item logout-item" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1>Fee Status &amp; Invoices</h1>
+                <p>Track your semester fee, dues, and payment receipts</p>
             </div>
+            <div class="user-profile">
+                <span class="avatar">🎓</span>
+                <span class="username" id="topbar-name">Student</span>
+            </div>
+        </header>
 
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
-                <a href="room.html" class="nav-item">🛏️ My Room</a>
-                <a href="fees.html" class="nav-item active">💳 Fee Status</a>
-                <a href="complaints.html" class="nav-item">📝 My Complaints</a>
-                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
-            </nav>
-        </aside>
-
-        <!-- 2. Main Content Area -->
-        <main class="main-content">
-
-            <!-- Top Navbar -->
-            <header class="topbar">
-                <div class="topbar-title">
-                    <h1>Fee Status & Invoices</h1>
-                    <p>Track your semester fee breakdown, outstanding dues, and download receipts</p>
+        <!-- Fee Summary Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💳</div>
+                <div class="stat-info">
+                    <h3>Total Semester Fee</h3>
+                    <p class="stat-number" id="stat-total">...</p>
+                    <span class="stat-subtext">Hostel &amp; Mess Fee</span>
                 </div>
-                <div class="user-profile">
-                    <span class="avatar">🎓</span>
-                    <span class="username">Rahul Sharma (A-204)</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💵</div>
+                <div class="stat-info">
+                    <h3>Amount Paid</h3>
+                    <p class="stat-number" id="stat-paid">...</p>
+                    <span class="stat-subtext" id="stat-paid-sub">Loading...</span>
                 </div>
-            </header>
-
-            <!-- 3. Fee Summary Cards (3 Cards) -->
-            <section class="stats-grid">
-
-                <div class="stat-card">
-                    <div class="stat-icon">💳</div>
-                    <div class="stat-info">
-                        <h3>Total Semester Fee</h3>
-                        <p class="stat-number">₹30,000</p>
-                        <span class="stat-subtext">Hostel & Mess Fee</span>
-                    </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" id="stat-icon-due">✅</div>
+                <div class="stat-info">
+                    <h3>Remaining Balance</h3>
+                    <p class="stat-number" id="stat-due">...</p>
+                    <span class="stat-subtext" id="stat-due-sub">Loading...</span>
                 </div>
+            </div>
+        </section>
 
-                <div class="stat-card">
-                    <div class="stat-icon">💵</div>
-                    <div class="stat-info">
-                        <h3>Amount Paid</h3>
-                        <p class="stat-number">₹30,000</p>
-                        <span class="stat-subtext text-success">Verified by Accounts</span>
-                    </div>
-                </div>
+        <!-- Payment History Table -->
+        <section class="card-box">
+            <div class="section-header">
+                <h2>📄 Payment Receipts &amp; Transactions</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Receipt ID</th>
+                        <th>Description</th>
+                        <th>Total Fee</th>
+                        <th>Amount Paid</th>
+                        <th>Balance Due</th>
+                        <th>Payment Mode</th>
+                        <th>Date Paid</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="fees-tbody">
+                    <tr><td colspan="8" style="text-align:center;padding:20px;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </section>
 
-                <div class="stat-card">
-                    <div class="stat-icon">✅</div>
-                    <div class="stat-info">
-                        <h3>Remaining Balance</h3>
-                        <p class="stat-number">₹0</p>
-                        <span class="stat-subtext text-success">No Pending Dues</span>
-                    </div>
-                </div>
+    </main>
+</div>
 
-            </section>
+<script>
+    const API    = 'http://127.0.0.1:8000';
+    const name   = localStorage.getItem('userName');
+    const rollNo = localStorage.getItem('userRoll');
 
-            <!-- 4. Payment History & Receipts Table -->
-            <section class="card-box">
-                <div class="section-header">
-                    <h2>📄 Payment Receipts & Transactions</h2>
-                </div>
+    if (!localStorage.getItem('userRole') || localStorage.getItem('userRole') !== 'student') {
+        window.location.href = '../index.html';
+    }
+    document.getElementById('topbar-name').textContent = name || 'Student';
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Receipt ID</th>
-                            <th>Description</th>
-                            <th>Amount Paid</th>
-                            <th>Payment Mode</th>
-                            <th>Date Paid</th>
-                            <th>Status</th>
-                            <th>Receipt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>#REC-1001</strong></td>
-                            <td>Full Semester 2026 - Room & Mess Fee</td>
-                            <td>₹30,000</td>
-                            <td>Online (UPI / NetBanking)</td>
-                            <td>05 Oct 2026</td>
-                            <td><span class="badge badge-resolved">Paid</span></td>
-                            <td>
-                                <button class="btn-sm">📥 Download</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#REC-0842</strong></td>
-                            <td>Hostel Security Deposit (Refundable)</td>
-                            <td>₹5,000</td>
-                            <td>Debit Card</td>
-                            <td>15 Jul 2026</td>
-                            <td><span class="badge badge-resolved">Paid</span></td>
-                            <td>
-                                <button class="btn-sm">📥 Download</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault(); localStorage.clear(); window.location.href = '../index.html';
+    });
 
-        </main>
+    async function loadFees() {
+        if (!rollNo) return;
+        try {
+            const res  = await fetch(`${API}/api/fees/${rollNo}`);
+            const data = await res.json();
+            const fees = data.fees;
 
-    </div>
+            if (!fees || fees.length === 0) {
+                document.getElementById('fees-tbody').innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;padding:20px;">No fee records found.</td></tr>';
+                document.getElementById('stat-total').textContent = '₹0';
+                document.getElementById('stat-paid').textContent  = '₹0';
+                document.getElementById('stat-due').textContent   = '₹0';
+                return;
+            }
+
+            // Summary from the first (and usually only) fee record
+            const f = fees[0];
+            document.getElementById('stat-total').textContent    = '₹' + Number(f.total_fee).toLocaleString('en-IN');
+            document.getElementById('stat-paid').textContent     = '₹' + Number(f.amount_paid).toLocaleString('en-IN');
+            document.getElementById('stat-paid-sub').textContent = f.payment_mode || 'Online';
+
+            const due = Number(f.due_balance);
+            document.getElementById('stat-due').textContent = '₹' + due.toLocaleString('en-IN');
+            if (due === 0) {
+                document.getElementById('stat-due-sub').textContent = 'No pending dues ✅';
+                document.getElementById('stat-due-sub').className   = 'stat-subtext text-success';
+                document.getElementById('stat-icon-due').textContent = '✅';
+            } else {
+                document.getElementById('stat-due-sub').textContent = 'Payment pending ⚠️';
+                document.getElementById('stat-due-sub').className   = 'stat-subtext text-warning';
+                document.getElementById('stat-icon-due').textContent = '⚠️';
+            }
+
+            // Table rows
+            document.getElementById('fees-tbody').innerHTML = fees.map(fee => `
+                <tr>
+                    <td><strong>#${fee.receipt_id}</strong></td>
+                    <td>${fee.description || 'Semester Fee'}</td>
+                    <td>₹${Number(fee.total_fee).toLocaleString('en-IN')}</td>
+                    <td>₹${Number(fee.amount_paid).toLocaleString('en-IN')}</td>
+                    <td>₹${Number(fee.due_balance).toLocaleString('en-IN')}</td>
+                    <td>${fee.payment_mode || '-'}</td>
+                    <td>${fee.date_paid || 'Not paid'}</td>
+                    <td><span class="badge ${fee.status === 'Paid' ? 'badge-resolved' : 'badge-pending'}">${fee.status}</span></td>
+                </tr>`).join('');
+
+        } catch(e) {
+            console.error(e);
+            document.getElementById('fees-tbody').innerHTML =
+                '<tr><td colspan="8" style="text-align:center;color:red;">Error loading fees. Is the server running?</td></tr>';
+        }
+    }
+
+    loadFees();
+</script>
 
 </body>
-
 </html>

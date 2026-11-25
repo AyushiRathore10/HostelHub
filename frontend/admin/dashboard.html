@@ -1,137 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostelHub - Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css">
-
 </head>
-
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- 1. Left Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>🏢 HostelHub</h2>
-                <span class="role-badge">Admin Portal</span>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🏢 HostelHub</h2>
+            <span class="role-badge">Admin Portal</span>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+            <a href="students.html" class="nav-item">👥 Students</a>
+            <a href="rooms.html"    class="nav-item">🛏️ Rooms</a>
+            <a href="fees.html"     class="nav-item">💳 Fees &amp; Payments</a>
+            <a href="complaints.html" class="nav-item">📝 Complaints</a>
+            <a href="../index.html" class="nav-item logout-item" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1>Dashboard Overview</h1>
+                <p>Welcome back, <span id="admin-name">Admin</span>!</p>
             </div>
+            <div class="user-profile">
+                <span class="avatar">👨‍💼</span>
+                <span class="username" id="topbar-name">Admin User</span>
+            </div>
+        </header>
 
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
-                <a href="students.html" class="nav-item">👥 Students</a>
-                <a href="rooms.html" class="nav-item">🛏️ Rooms</a>
-                <a href="fees.html" class="nav-item">💳 Fees & Payments</a>
-                <a href="complaints.html" class="nav-item">📝 Complaints</a>
-                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
-            </nav>
-        </aside>
-
-        <!-- 2. Main Content Area -->
-        <main class="main-content">
-
-            <!-- Top Navbar -->
-            <header class="topbar">
-                <div class="topbar-title">
-                    <h1>Dashboard Overview</h1>
-                    <p>Welcome back, Chief Warden</p>
+        <!-- Stats Cards (filled by JS from API) -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h3>Total Students</h3>
+                    <p class="stat-number" id="stat-students">...</p>
+                    <span class="stat-subtext">Active residents</span>
                 </div>
-                <div class="user-profile">
-                    <span class="avatar">👨‍💼</span>
-                    <span class="username">Admin User</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🛏️</div>
+                <div class="stat-info">
+                    <h3>Beds Available</h3>
+                    <p class="stat-number" id="stat-rooms">...</p>
+                    <span class="stat-subtext" id="stat-rooms-sub">Out of total rooms</span>
                 </div>
-            </header>
-
-            <!-- 3. Four Statistics Summary Cards -->
-            <section class="stats-grid">
-
-                <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-info">
-                        <h3>Total Students</h3>
-                        <p class="stat-number">120</p>
-                        <span class="stat-subtext">Active residents</span>
-                    </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💳</div>
+                <div class="stat-info">
+                    <h3>Pending Fees</h3>
+                    <p class="stat-number" id="stat-fees">...</p>
+                    <span class="stat-subtext">Outstanding dues</span>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">🛏️</div>
-                    <div class="stat-info">
-                        <h3>Rooms Available</h3>
-                        <p class="stat-number">8 / 40</p>
-                        <span class="stat-subtext">32 rooms occupied</span>
-                    </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-info">
+                    <h3>Open Complaints</h3>
+                    <p class="stat-number" id="stat-complaints">...</p>
+                    <span class="stat-subtext">Requires attention</span>
                 </div>
+            </div>
+        </section>
 
-                <div class="stat-card">
-                    <div class="stat-icon">💳</div>
-                    <div class="stat-info">
-                        <h3>Pending Fees</h3>
-                        <p class="stat-number">₹45,000</p>
-                        <span class="stat-subtext">15 students pending</span>
-                    </div>
-                </div>
+        <!-- Recent Complaints Table -->
+        <section class="table-section">
+            <div class="section-header">
+                <h2>Recent Student Complaints</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Room No</th>
+                        <th>Category</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="complaints-tbody">
+                    <tr><td colspan="6" style="text-align:center;padding:20px;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </section>
 
-                <div class="stat-card">
-                    <div class="stat-icon">⚠️</div>
-                    <div class="stat-info">
-                        <h3>Open Complaints</h3>
-                        <p class="stat-number">5</p>
-                        <span class="stat-subtext">Requires attention</span>
-                    </div>
-                </div>
+    </main>
+</div>
 
-            </section>
+<script>
+    const API = 'http://127.0.0.1:8000';
 
-            <!-- 4. Recent Complaints Table (Sample Data) -->
-            <section class="table-section">
-                <div class="section-header">
-                    <h2>Recent Student Complaints</h2>
-                </div>
+    // ── Auth guard: redirect to login if not logged in ──
+    const role = localStorage.getItem('userRole');
+    const name = localStorage.getItem('userName');
+    if (!role || role !== 'admin') {
+        window.location.href = '../index.html';
+    }
+    document.getElementById('admin-name').textContent  = name || 'Admin';
+    document.getElementById('topbar-name').textContent = name || 'Admin User';
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Student Name</th>
-                            <th>Room No</th>
-                            <th>Issue Category</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#101</td>
-                            <td>Rahul Sharma</td>
-                            <td>A-204</td>
-                            <td>Fan not working (Electrical)</td>
-                            <td><span class="badge badge-pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>#102</td>
-                            <td>Amit Patel</td>
-                            <td>B-105</td>
-                            <td>Bathroom tap leakage (Plumbing)</td>
-                            <td><span class="badge badge-progress">In Progress</span></td>
-                        </tr>
-                        <tr>
-                            <td>#103</td>
-                            <td>Priya Verma</td>
-                            <td>C-302</td>
-                            <td>Wi-Fi slow in block (Internet)</td>
-                            <td><span class="badge badge-resolved">Resolved</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+    // ── Logout ──
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = '../index.html';
+    });
 
-        </main>
+    // ── Load dashboard stats from API ──
+    async function loadStats() {
+        try {
+            const res  = await fetch(`${API}/api/dashboard/stats`);
+            const data = await res.json();
+            document.getElementById('stat-students').textContent   = data.total_students;
+            document.getElementById('stat-rooms').textContent      = data.available_rooms + ' / ' + data.total_rooms;
+            document.getElementById('stat-fees').textContent       = '₹' + Number(data.pending_fees).toLocaleString('en-IN');
+            document.getElementById('stat-complaints').textContent = data.open_complaints;
+        } catch(e) {
+            console.error('Stats load failed:', e);
+        }
+    }
 
-    </div>
+    // ── Load recent complaints ──
+    async function loadComplaints() {
+        try {
+            const res  = await fetch(`${API}/api/complaints`);
+            const data = await res.json();
+            const tbody = document.getElementById('complaints-tbody');
+            tbody.innerHTML = '';
+
+            const recent = data.complaints.slice(0, 5); // Show only 5 most recent
+            if (recent.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;">No complaints yet.</td></tr>';
+                return;
+            }
+
+            recent.forEach(c => {
+                const badgeClass = c.status === 'Resolved'    ? 'badge-resolved'
+                                 : c.status === 'In Progress' ? 'badge-progress'
+                                 : 'badge-pending';
+                tbody.innerHTML += `
+                <tr>
+                    <td><strong>#${c.id}</strong></td>
+                    <td>${c.student_name}</td>
+                    <td>${c.room_no || '-'}</td>
+                    <td>${c.category}</td>
+                    <td>${c.title}</td>
+                    <td><span class="badge ${badgeClass}">${c.status}</span></td>
+                </tr>`;
+            });
+        } catch(e) {
+            document.getElementById('complaints-tbody').innerHTML =
+                '<tr><td colspan="6" style="text-align:center;color:red;">Could not load complaints.</td></tr>';
+        }
+    }
+
+    loadStats();
+    loadComplaints();
+</script>
 
 </body>
-
 </html>

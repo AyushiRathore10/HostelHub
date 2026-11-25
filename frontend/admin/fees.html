@@ -1,143 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostelHub - Fee Management</title>
     <link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- 1. Left Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>🏢 HostelHub</h2>
-                <span class="role-badge">Admin Portal</span>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🏢 HostelHub</h2>
+            <span class="role-badge">Admin Portal</span>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html"  class="nav-item">📊 Dashboard</a>
+            <a href="students.html"   class="nav-item">👥 Students</a>
+            <a href="rooms.html"      class="nav-item">🛏️ Rooms</a>
+            <a href="fees.html"       class="nav-item active">💳 Fees &amp; Payments</a>
+            <a href="complaints.html" class="nav-item">📝 Complaints</a>
+            <a href="../index.html"   class="nav-item logout-item" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1>Fee &amp; Payment Management</h1>
+                <p>Track student hostel fees, outstanding dues, and payment receipts</p>
+            </div>
+            <div class="user-profile">
+                <span class="avatar">👨‍💼</span>
+                <span class="username" id="topbar-name">Admin</span>
+            </div>
+        </header>
+
+        <div class="table-section">
+            <div class="toolbar">
+                <div style="display:flex;gap:10px;">
+                    <input type="text" id="fee-search" class="search-input" placeholder="🔍 Search student or receipt...">
+                    <select id="status-filter" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
             </div>
 
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
-                <a href="students.html" class="nav-item">👥 Students</a>
-                <a href="rooms.html" class="nav-item">🛏️ Rooms</a>
-                <a href="fees.html" class="nav-item active">💳 Fees & Payments</a>
-                <a href="complaints.html" class="nav-item">📝 Complaints</a>
-                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
-            </nav>
-        </aside>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Receipt ID</th>
+                        <th>Student Name</th>
+                        <th>Roll No</th>
+                        <th>Room No</th>
+                        <th>Total Fee</th>
+                        <th>Amount Paid</th>
+                        <th>Due Balance</th>
+                        <th>Payment Mode</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="fees-tbody">
+                    <tr><td colspan="11" style="text-align:center;padding:20px;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
 
-        <!-- 2. Main Content Area -->
-        <main class="main-content">
-
-            <!-- Top Navbar -->
-            <header class="topbar">
-                <div class="topbar-title">
-                    <h1>Fee & Payment Management</h1>
-                    <p>Track student hostel fees, outstanding dues, and payment receipts</p>
-                </div>
-                <div class="user-profile">
-                    <span class="avatar">👨‍💼</span>
-                    <span class="username">Admin User</span>
-                </div>
-            </header>
-
-            <!-- 3. Toolbar (Search, Filter, Record Payment) -->
-            <div class="table-section">
-                <div class="toolbar">
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="fee-search" class="search-input"
-                            placeholder="🔍 Search student or receipt...">
-                        <select class="filter-select">
-                            <option value="all">All Status</option>
-                            <option value="paid">Paid</option>
-                            <option value="pending">Pending</option>
-                        </select>
-                    </div>
-
-                    <button id="add-fee-btn" class="btn-primary">
-                        ➕ Record Payment
-                    </button>
-                </div>
-
-                <!-- 4. Fee Transactions Table (Dummy Data) -->
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Receipt ID</th>
-                            <th>Student Name</th>
-                            <th>Room No</th>
-                            <th>Total Fee</th>
-                            <th>Amount Paid</th>
-                            <th>Due Balance</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>#REC-1001</strong></td>
-                            <td>Rahul Sharma (CS202401)</td>
-                            <td>A-204</td>
-                            <td>₹30,000</td>
-                            <td>₹30,000</td>
-                            <td>₹0</td>
-                            <td><span class="badge badge-resolved">Paid</span></td>
-                            <td>05 Oct 2026</td>
-                            <td>
-                                <button class="btn-sm btn-manage">View Receipt</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#REC-1002</strong></td>
-                            <td>Amit Patel (CS202402)</td>
-                            <td>A-204</td>
-                            <td>₹30,000</td>
-                            <td>₹30,000</td>
-                            <td>₹0</td>
-                            <td><span class="badge badge-resolved">Paid</span></td>
-                            <td>08 Oct 2026</td>
-                            <td>
-                                <button class="btn-sm btn-manage">View Receipt</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#REC-1003</strong></td>
-                            <td>Priya Verma (EC202415)</td>
-                            <td>B-105</td>
-                            <td>₹30,000</td>
-                            <td>₹15,000</td>
-                            <td>₹15,000</td>
-                            <td><span class="badge badge-pending">Pending</span></td>
-                            <td>10 Oct 2026</td>
-                            <td>
-                                <button class="btn-sm btn-allocate">Collect Due</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#REC-1004</strong></td>
-                            <td>Rohan Gupta (ME202408)</td>
-                            <td>C-302</td>
-                            <td>₹30,000</td>
-                            <td>₹30,000</td>
-                            <td>₹0</td>
-                            <td><span class="badge badge-resolved">Paid</span></td>
-                            <td>11 Oct 2026</td>
-                            <td>
-                                <button class="btn-sm btn-manage">View Receipt</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </main>
-
+<!-- COLLECT DUE MODAL -->
+<div id="pay-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;">
+    <div style="background:#fff;width:400px;margin:120px auto;border-radius:12px;padding:30px;">
+        <h2 style="margin-bottom:20px;color:#0f172a;">💳 Record Payment</h2>
+        <input type="hidden" id="pay-receipt-id">
+        <div class="form-group" style="margin-bottom:14px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:#334155;margin-bottom:4px;">Amount Paid (₹)</label>
+            <input type="number" id="pay-amount" class="search-input" style="width:100%" placeholder="e.g. 30000">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:#334155;margin-bottom:4px;">Payment Mode</label>
+            <select id="pay-mode" class="filter-select" style="width:100%">
+                <option>Online (UPI)</option>
+                <option>NetBanking</option>
+                <option>Debit Card</option>
+                <option>Cash</option>
+            </select>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn-primary" style="flex:1;" onclick="submitPayment()">✅ Save Payment</button>
+            <button class="btn-primary" style="flex:1;background:#64748b;" onclick="document.getElementById('pay-modal').style.display='none'">✖ Cancel</button>
+        </div>
     </div>
+</div>
+
+<script>
+    const API = 'http://127.0.0.1:8000';
+
+    if (!localStorage.getItem('userRole') || localStorage.getItem('userRole') !== 'admin') {
+        window.location.href = '../index.html';
+    }
+    document.getElementById('topbar-name').textContent = localStorage.getItem('userName') || 'Admin';
+
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault(); localStorage.clear(); window.location.href = '../index.html';
+    });
+
+    let allFees = [];
+
+    async function loadFees() {
+        const res  = await fetch(`${API}/api/fees`);
+        const data = await res.json();
+        allFees = data.fees;
+        renderTable(allFees);
+    }
+
+    function renderTable(fees) {
+        const tbody = document.getElementById('fees-tbody');
+        if (fees.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:20px;">No fee records found.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = fees.map(f => `
+            <tr>
+                <td><strong>#${f.receipt_id}</strong></td>
+                <td>${f.name}</td>
+                <td>${f.roll_no}</td>
+                <td>${f.room_no || '-'}</td>
+                <td>₹${Number(f.total_fee).toLocaleString('en-IN')}</td>
+                <td>₹${Number(f.amount_paid).toLocaleString('en-IN')}</td>
+                <td>₹${Number(f.due_balance).toLocaleString('en-IN')}</td>
+                <td>${f.payment_mode || '-'}</td>
+                <td><span class="badge ${f.status === 'Paid' ? 'badge-resolved' : 'badge-pending'}">${f.status}</span></td>
+                <td>${f.date_paid || '-'}</td>
+                <td>
+                    ${f.status === 'Pending'
+                        ? `<button class="btn-sm btn-allocate" onclick="openPayModal('${f.receipt_id}', ${f.total_fee})">Collect Due</button>`
+                        : `<button class="btn-sm btn-manage">View Receipt</button>`
+                    }
+                </td>
+            </tr>`).join('');
+    }
+
+    function applyFilters() {
+        const q      = document.getElementById('fee-search').value.toLowerCase();
+        const status = document.getElementById('status-filter').value;
+        renderTable(allFees.filter(f => {
+            const matchQ = f.name.toLowerCase().includes(q) || f.receipt_id.toLowerCase().includes(q) || f.roll_no.toLowerCase().includes(q);
+            const matchS = status === 'all' || f.status === status;
+            return matchQ && matchS;
+        }));
+    }
+    document.getElementById('fee-search').addEventListener('input', applyFilters);
+    document.getElementById('status-filter').addEventListener('change', applyFilters);
+
+    function openPayModal(receiptId, totalFee) {
+        document.getElementById('pay-receipt-id').value = receiptId;
+        document.getElementById('pay-amount').value     = totalFee;
+        document.getElementById('pay-modal').style.display = 'block';
+    }
+
+    async function submitPayment() {
+        const receiptId = document.getElementById('pay-receipt-id').value;
+        const amount    = parseFloat(document.getElementById('pay-amount').value);
+        const mode      = document.getElementById('pay-mode').value;
+
+        const res  = await fetch(`${API}/api/fees/${receiptId}`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ amount_paid: amount, payment_mode: mode })
+        });
+        const data = await res.json();
+        alert(data.message);
+        document.getElementById('pay-modal').style.display = 'none';
+        loadFees();
+    }
+
+    loadFees();
+</script>
 
 </body>
-
 </html>

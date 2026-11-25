@@ -1,1 +1,28 @@
-/.vscode
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.env
+venv/
+env/
+
+# Keep .env.example (safe to commit, no real passwords)
+!Backend/.env.example
+
+Backend/.env
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc

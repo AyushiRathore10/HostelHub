@@ -1,142 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HostelHub - Complaint Management</title>
     <link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- 1. Left Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>🏢 HostelHub</h2>
-                <span class="role-badge">Admin Portal</span>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🏢 HostelHub</h2>
+            <span class="role-badge">Admin Portal</span>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html"  class="nav-item">📊 Dashboard</a>
+            <a href="students.html"   class="nav-item">👥 Students</a>
+            <a href="rooms.html"      class="nav-item">🛏️ Rooms</a>
+            <a href="fees.html"       class="nav-item">💳 Fees &amp; Payments</a>
+            <a href="complaints.html" class="nav-item active">📝 Complaints</a>
+            <a href="../index.html"   class="nav-item logout-item" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-title">
+                <h1>Complaint Management</h1>
+                <p>Review student issues and update resolution status</p>
+            </div>
+            <div class="user-profile">
+                <span class="avatar">👨‍💼</span>
+                <span class="username" id="topbar-name">Admin</span>
+            </div>
+        </header>
+
+        <div class="table-section">
+            <div class="toolbar">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input type="text" id="complaint-search" class="search-input" placeholder="🔍 Search by name or room...">
+                    <select id="category-filter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Cleanliness">Cleanliness</option>
+                        <option value="Furniture">Furniture</option>
+                    </select>
+                    <select id="status-filter" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
             </div>
 
-            <nav class="sidebar-menu">
-                <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
-                <a href="students.html" class="nav-item">👥 Students</a>
-                <a href="rooms.html" class="nav-item">🛏️ Rooms</a>
-                <a href="fees.html" class="nav-item">💳 Fees & Payments</a>
-                <a href="complaints.html" class="nav-item active">📝 Complaints</a>
-                <a href="../index.html" class="nav-item logout-item">🚪 Logout</a>
-            </nav>
-        </aside>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Student Name</th>
+                        <th>Roll No</th>
+                        <th>Room No</th>
+                        <th>Category</th>
+                        <th>Title</th>
+                        <th>Date Filed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="complaints-tbody">
+                    <tr><td colspan="9" style="text-align:center;padding:20px;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
 
-        <!-- 2. Main Content Area -->
-        <main class="main-content">
+<script>
+    const API = 'http://127.0.0.1:8000';
 
-            <!-- Top Navbar -->
-            <header class="topbar">
-                <div class="topbar-title">
-                    <h1>Complaint Management</h1>
-                    <p>Review student issues, assign technicians, and track resolution status</p>
-                </div>
-                <div class="user-profile">
-                    <span class="avatar">👨‍💼</span>
-                    <span class="username">Admin User</span>
-                </div>
-            </header>
+    if (!localStorage.getItem('userRole') || localStorage.getItem('userRole') !== 'admin') {
+        window.location.href = '../index.html';
+    }
+    document.getElementById('topbar-name').textContent = localStorage.getItem('userName') || 'Admin';
 
-            <!-- 3. Toolbar (Search & Category Filters) -->
-            <div class="table-section">
-                <div class="toolbar">
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <input type="text" id="complaint-search" class="search-input"
-                            placeholder="🔍 Search complaint ID or room...">
-                        <select class="filter-select">
-                            <option value="all">All Categories</option>
-                            <option value="electrical">Electrical</option>
-                            <option value="plumbing">Plumbing</option>
-                            <option value="internet">Internet</option>
-                            <option value="cleanliness">Cleanliness</option>
-                        </select>
-                        <select class="filter-select">
-                            <option value="all">All Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="progress">In Progress</option>
-                            <option value="resolved">Resolved</option>
-                        </select>
-                    </div>
-                </div>
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault(); localStorage.clear(); window.location.href = '../index.html';
+    });
 
-                <!-- 4. Complaints Table (Dummy Data) -->
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Ticket ID</th>
-                            <th>Student Name</th>
-                            <th>Room No</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Date Filed</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>#CMP-101</strong></td>
-                            <td>Rahul Sharma</td>
-                            <td>A-204</td>
-                            <td>Electrical</td>
-                            <td>light bulb fused</td>
-                            <td>11 Oct 2026</td>
-                            <td><span class="badge badge-progress">In Progress</span></td>
-                            <td>
-                                <button class="btn-sm btn-allocate">Mark Resolved</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#CMP-102</strong></td>
-                            <td>Amit Patel</td>
-                            <td>B-105</td>
-                            <td>Plumbing</td>
-                            <td>Bathroom tap leaking continuously</td>
-                            <td>12 Oct 2026</td>
-                            <td><span class="badge badge-pending">Pending</span></td>
-                            <td>
-                                <button class="btn-sm btn-manage">Assign Staff</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#CMP-103</strong></td>
-                            <td>Priya Verma</td>
-                            <td>C-302</td>
-                            <td>Internet</td>
-                            <td>Wi-Fi signal weak and disconnecting in evening</td>
-                            <td>09 Oct 2026</td>
-                            <td><span class="badge badge-resolved">Resolved</span></td>
-                            <td>
-                                <button class="btn-sm btn-manage">Reopen</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#CMP-104</strong></td>
-                            <td>Rohan Gupta</td>
-                            <td>A-101</td>
-                            <td>Cleanliness</td>
-                            <td>Corridor garbage dustbin overflowing</td>
-                            <td>12 Oct 2026</td>
-                            <td><span class="badge badge-pending">Pending</span></td>
-                            <td>
-                                <button class="btn-sm btn-manage">Assign Staff</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    let allComplaints = [];
 
-        </main>
+    async function loadComplaints() {
+        const res  = await fetch(`${API}/api/complaints`);
+        const data = await res.json();
+        allComplaints = data.complaints;
+        renderTable(allComplaints);
+    }
 
-    </div>
+    function renderTable(complaints) {
+        const tbody = document.getElementById('complaints-tbody');
+        if (complaints.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;">No complaints found.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = complaints.map(c => {
+            const badgeClass = c.status === 'Resolved'    ? 'badge-resolved'
+                             : c.status === 'In Progress' ? 'badge-progress'
+                             : 'badge-pending';
+
+            // Next status button logic
+            let actionBtn = '';
+            if (c.status === 'Pending') {
+                actionBtn = `<button class="btn-sm btn-allocate" onclick="updateStatus(${c.id},'In Progress')">▶ Start</button>`;
+            } else if (c.status === 'In Progress') {
+                actionBtn = `<button class="btn-sm btn-allocate" style="background:#16a34a" onclick="updateStatus(${c.id},'Resolved')">✔ Resolve</button>`;
+            } else {
+                actionBtn = `<button class="btn-sm btn-manage" onclick="updateStatus(${c.id},'Pending')">↩ Reopen</button>`;
+            }
+
+            const date = c.date_filed ? new Date(c.date_filed).toLocaleDateString('en-IN') : '-';
+            return `
+            <tr>
+                <td><strong>#CMP-${c.id}</strong></td>
+                <td>${c.student_name}</td>
+                <td>${c.roll_no}</td>
+                <td>${c.room_no || '-'}</td>
+                <td>${c.category}</td>
+                <td>${c.title}</td>
+                <td>${date}</td>
+                <td><span class="badge ${badgeClass}">${c.status}</span></td>
+                <td style="display:flex;gap:6px;">
+                    ${actionBtn}
+                    <button class="btn-sm" style="background:#ef4444;color:#fff;" onclick="deleteComplaint(${c.id})">🗑️</button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function updateStatus(id, newStatus) {
+        const res  = await fetch(`${API}/api/complaints/${id}`, {
+            method:  'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) loadComplaints();
+    }
+
+    async function deleteComplaint(id) {
+        if (!confirm('Delete this complaint?')) return;
+        await fetch(`${API}/api/complaints/${id}`, { method: 'DELETE' });
+        loadComplaints();
+    }
+
+    function applyFilters() {
+        const q        = document.getElementById('complaint-search').value.toLowerCase();
+        const category = document.getElementById('category-filter').value;
+        const status   = document.getElementById('status-filter').value;
+        renderTable(allComplaints.filter(c => {
+            const matchQ = c.student_name.toLowerCase().includes(q) || (c.room_no || '').toLowerCase().includes(q);
+            const matchC = category === 'all' || c.category === category;
+            const matchS = status   === 'all' || c.status   === status;
+            return matchQ && matchC && matchS;
+        }));
+    }
+    document.getElementById('complaint-search').addEventListener('input', applyFilters);
+    document.getElementById('category-filter').addEventListener('change', applyFilters);
+    document.getElementById('status-filter').addEventListener('change', applyFilters);
+
+    loadComplaints();
+</script>
 
 </body>
-
 </html>

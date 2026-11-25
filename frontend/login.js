@@ -1,90 +1,95 @@
-// 1. Get HTML elements by their IDs
-const adminCard = document.getElementById('admin-card');
-const studentCard = document.getElementById('student-card');
-const selectedRoleInput = document.getElementById('selected-role');
-const formHeading = document.getElementById('form-heading');
-const loginForm = document.getElementById('login-form');
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
-const errorMessage = document.getElementById('error-message');
+/*
+  login.js
+  --------
+  This file runs on the login page (index.html).
+  It handles:
+    1. Role selection (Admin / Student card click)
+    2. Form submission → sends data to FastAPI backend
+    3. Saves user info in localStorage
+    4. Redirects to the right dashboard
+*/
 
-// 2. Set default active card on page load (Student is selected by default)
+const API_URL = 'http://127.0.0.1:8000';
+
+// Grab HTML elements by their IDs
+const adminCard        = document.getElementById('admin-card');
+const studentCard      = document.getElementById('student-card');
+const selectedRoleInput= document.getElementById('selected-role');
+const formHeading      = document.getElementById('form-heading');
+const loginForm        = document.getElementById('login-form');
+const usernameInput    = document.getElementById('username');
+const passwordInput    = document.getElementById('password');
+const errorMessage     = document.getElementById('error-message');
+
+// Student card is highlighted by default
 studentCard.classList.add('active');
 
-// 3. When Admin Card is clicked
+// When Admin card is clicked
 adminCard.addEventListener('click', function () {
-    // Highlight Admin card, remove highlight from Student card
     adminCard.classList.add('active');
     studentCard.classList.remove('active');
-
-    // Update the hidden role value and the heading text
     selectedRoleInput.value = 'admin';
     formHeading.textContent = 'Admin Login';
-
-    // Clear any previous error messages
-    errorMessage.textContent = '';
+    usernameInput.placeholder = 'Enter admin username';
+    errorMessage.textContent  = '';
 });
 
-// 4. When Student Card is clicked
+// When Student card is clicked
 studentCard.addEventListener('click', function () {
-    // Highlight Student card, remove highlight from Admin card
     studentCard.classList.add('active');
     adminCard.classList.remove('active');
-
-    // Update the hidden role value and the heading text
     selectedRoleInput.value = 'student';
     formHeading.textContent = 'Student Login';
-
-    // Clear any previous error messages
-    errorMessage.textContent = '';
+    usernameInput.placeholder = 'Enter your Roll Number (e.g. CS202401)';
+    errorMessage.textContent  = '';
 });
 
-// 5. Handle Login Form Submit (Connect to FastAPI Backend!)
-loginForm.addEventListener('submit', async function (event) {
-    event.preventDefault();
+// Form Submit → call FastAPI /api/auth/login
+loginForm.addEventListener('submit', async function (e) {
+    e.preventDefault();   // Stop browser from refreshing the page
 
-    const role = selectedRoleInput.value;
+    const role     = selectedRoleInput.value;
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // Basic Validation: Check password length
     if (password.length < 4) {
         errorMessage.style.color = '#d93025';
-        errorMessage.textContent = 'Password must be at least 4 characters long.';
+        errorMessage.textContent = 'Password must be at least 4 characters.';
         return;
     }
 
-    // Show loading state
     errorMessage.style.color = '#1e3c72';
-    errorMessage.textContent = 'Contacting backend server...';
+    errorMessage.textContent = '⏳ Contacting server...';
 
     try {
-        // Send POST request to our running FastAPI server!
-        const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                role: role,
-                username: username,
-                password: password
-            })
+        /*
+          fetch() sends an HTTP request.
+          method: 'POST'  → we are SENDING data, not just reading a page
+          headers         → tells server we are sending JSON
+          body            → the actual data as a JSON string
+        */
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ role, username, password })
         });
 
-        // Read JSON response from FastAPI
-        const result = await response.json();
+        const result = await response.json();  // Parse the JSON response from FastAPI
 
-        // If backend says success: True
         if (result.success) {
             errorMessage.style.color = '#137333';
-            errorMessage.textContent = `${result.message} Welcome, ${result.name}!`;
+            errorMessage.textContent = `✅ ${result.message}. Welcome, ${result.name}!`;
 
-            // Save user info in browser memory
+            // Save in localStorage — like a temporary memory in the browser
+            // These values are read on every dashboard page
             localStorage.setItem('userRole', result.role);
             localStorage.setItem('userName', result.name);
 
-            // Redirect to appropriate dashboard after 1 second
+            if (result.role === 'student') {
+                localStorage.setItem('userRoll', result.roll_no); // needed to load student-specific data
+            }
+
+            // Wait 1 second then redirect
             setTimeout(function () {
                 if (result.role === 'admin') {
                     window.location.href = 'admin/dashboard.html';
@@ -94,17 +99,13 @@ loginForm.addEventListener('submit', async function (event) {
             }, 1000);
 
         } else {
-            // Backend rejected credentials (Invalid password)
             errorMessage.style.color = '#d93025';
-            errorMessage.textContent = result.message;
+            errorMessage.textContent = '❌ ' + result.message;
         }
 
     } catch (error) {
-        // If Python server is offline or network fails
         errorMessage.style.color = '#d93025';
-        errorMessage.textContent = 'Cannot reach backend server. Make sure FastAPI is running on port 8000!';
-        console.error('Connection error:', error);
+        errorMessage.textContent = '🔴 Cannot reach server. Make sure FastAPI is running on port 8000!';
+        console.error(error);
     }
 });
-
-

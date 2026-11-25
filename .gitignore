@@ -19,6 +19,10 @@ env/
 
 Backend/.env
 
+# Docs (local only)
+README.md
+INTERVIEW_PREP.md
+
 # Windows
 desktop.ini
 Thumbs.db

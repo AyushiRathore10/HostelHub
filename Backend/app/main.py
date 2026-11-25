@@ -1,41 +1,17 @@
-"""
-main.py
--------
-This is the HEART of our backend. FastAPI application lives here.
-
-Every URL endpoint (like /api/students, /api/login) is defined here.
-When the browser sends a request, FastAPI reads it, talks to MySQL via
-database.py, and sends back a JSON response.
-
-Simple flow:
-  Browser  -->  FastAPI (main.py)  -->  MySQL (database.py)  -->  back to Browser
-"""
-
 import os
+import mysql.connector
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 from app.database import get_connection
 
-# ─────────────────────────────────────────────
-# Create the FastAPI app instance
-# title/description/version show up in Swagger UI at /docs
-# ─────────────────────────────────────────────
 app = FastAPI(
     title="HostelHub API",
     description="Complete Backend API for Hostel Management System",
     version="2.0.0"
 )
 
-# ─────────────────────────────────────────────
-# CORS Middleware
-# CORS = Cross-Origin Resource Sharing
-# Problem: Browser blocks requests from one address (frontend file://)
-#          to another address (http://127.0.0.1:8000) by default.
-# Solution: We tell FastAPI to allow ALL origins so our HTML files
-#           can freely call our API.
-# ─────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -45,16 +21,9 @@ app.add_middleware(
 )
 
 
-# ═══════════════════════════════════════════════
-#  PYDANTIC MODELS  (Request body shapes)
-#  Pydantic validates incoming JSON automatically.
-#  Think of it as a "contract" — if the browser
-#  sends wrong data, FastAPI rejects it instantly.
-# ═══════════════════════════════════════════════
-
 class LoginRequest(BaseModel):
-    role: str       # "admin" or "student"
-    username: str   # admin username OR student roll_no
+    role: str
+    username: str
     password: str
 
 class StudentCreate(BaseModel):
@@ -88,7 +57,7 @@ class ComplaintRequest(BaseModel):
     description: str
 
 class ComplaintStatusUpdate(BaseModel):
-    status: str   # "Pending" | "In Progress" | "Resolved"
+    status: str
 
 class RoomCreate(BaseModel):
     room_no: str
@@ -107,13 +76,8 @@ class NoticeCreate(BaseModel):
     posted_by: Optional[str] = "Admin"
 
 
-# ═══════════════════════════════════════════════
-#  HEALTH CHECK
-# ═══════════════════════════════════════════════
-
 @app.get("/", tags=["Health"])
 def home():
-    """Check if the server is running."""
     return {
         "status": "online",
         "message": "HostelHub Backend is running!",
@@ -121,23 +85,10 @@ def home():
     }
 
 
-# ═══════════════════════════════════════════════
-#  AUTH — LOGIN
-#  POST /api/auth/login
-#  Browser sends: { role, username, password }
-#  We check DB and return success/fail + user info
-# ═══════════════════════════════════════════════
-
 @app.post("/api/auth/login", tags=["Auth"])
 def login(data: LoginRequest):
-    """
-    Login for both Admin and Student.
-    Admin   → checks admins table using username + password
-    Student → checks students table using roll_no + password
-    """
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)  # dictionary=True → rows come as dicts
-
+    cursor = conn.cursor(dictionary=True)
     try:
         if data.role == "admin":
             cursor.execute(
@@ -153,7 +104,6 @@ def login(data: LoginRequest):
                     "name": user["name"],
                     "id": user["id"]
                 }
-
         elif data.role == "student":
             cursor.execute(
                 "SELECT * FROM students WHERE roll_no=%s AND password=%s",
@@ -170,23 +120,14 @@ def login(data: LoginRequest):
                     "room_no": user["room_no"],
                     "id": user["id"]
                 }
-
         return {"success": False, "message": "Invalid username or password"}
-
     finally:
         cursor.close()
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  DASHBOARD STATS
-#  GET /api/dashboard/stats
-#  Returns counts for the admin dashboard cards
-# ═══════════════════════════════════════════════
-
 @app.get("/api/dashboard/stats", tags=["Dashboard"])
 def get_dashboard_stats():
-    """Return summary numbers shown on the Admin Dashboard."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -223,13 +164,8 @@ def get_dashboard_stats():
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  STUDENTS
-# ═══════════════════════════════════════════════
-
 @app.get("/api/students", tags=["Students"])
 def get_all_students():
-    """Return all students (admin view)."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -237,7 +173,6 @@ def get_all_students():
             "SELECT id, roll_no, name, email, phone, course, year, room_no, bed_no, fee_status, created_at FROM students"
         )
         students = cursor.fetchall()
-        # Convert datetime objects to string so JSON can serialize them
         for s in students:
             if s.get("created_at"):
                 s["created_at"] = str(s["created_at"])
@@ -249,7 +184,6 @@ def get_all_students():
 
 @app.get("/api/students/{roll_no}", tags=["Students"])
 def get_student_by_roll(roll_no: str):
-    """Return one student's full profile by roll number."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -268,7 +202,6 @@ def get_student_by_roll(roll_no: str):
 
 @app.post("/api/students", tags=["Students"])
 def add_student(data: StudentCreate):
-    """Add a new student (admin only)."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -279,7 +212,6 @@ def add_student(data: StudentCreate):
              data.course, data.year, data.room_no, data.bed_no,
              data.fee_status, data.password)
         )
-        # Update room occupancy count
         cursor.execute(
             "UPDATE rooms SET occupied = occupied + 1 WHERE room_no = %s",
             (data.room_no,)
@@ -296,15 +228,12 @@ def add_student(data: StudentCreate):
 
 @app.put("/api/students/{roll_no}", tags=["Students"])
 def update_student(roll_no: str, data: StudentUpdate):
-    """Update student details (admin only)."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        # Build SET clause only for fields that were actually sent
         fields = {k: v for k, v in data.model_dump().items() if v is not None}
         if not fields:
             raise HTTPException(status_code=400, detail="No fields to update")
-
         set_clause = ", ".join(f"{k}=%s" for k in fields)
         values = list(fields.values()) + [roll_no]
         cursor.execute(f"UPDATE students SET {set_clause} WHERE roll_no=%s", values)
@@ -319,16 +248,13 @@ def update_student(roll_no: str, data: StudentUpdate):
 
 @app.delete("/api/students/{roll_no}", tags=["Students"])
 def delete_student(roll_no: str):
-    """Delete a student record (admin only)."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
-        # Get room_no first to decrement occupancy
         cursor.execute("SELECT room_no FROM students WHERE roll_no=%s", (roll_no,))
         row = cursor.fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Student not found")
-
         cursor.execute("DELETE FROM students WHERE roll_no=%s", (roll_no,))
         if row["room_no"]:
             cursor.execute(
@@ -342,31 +268,22 @@ def delete_student(roll_no: str):
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  ROOMS
-# ═══════════════════════════════════════════════
-
 @app.get("/api/rooms", tags=["Rooms"])
 def get_all_rooms():
-    """Return all rooms with their occupancy status."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
-        # Join with students to get the names of occupants
         cursor.execute("SELECT * FROM rooms ORDER BY block, room_no")
         rooms = cursor.fetchall()
-
         for room in rooms:
             cursor.execute(
                 "SELECT name, roll_no FROM students WHERE room_no=%s",
                 (room["room_no"],)
             )
-            occupants = cursor.fetchall()
-            room["occupants"] = occupants
+            room["occupants"] = cursor.fetchall()
             room["available_beds"] = room["capacity"] - room["occupied"]
             if room.get("created_at"):
                 room["created_at"] = str(room["created_at"])
-
         return {"success": True, "total": len(rooms), "rooms": rooms}
     finally:
         cursor.close()
@@ -375,7 +292,6 @@ def get_all_rooms():
 
 @app.post("/api/rooms", tags=["Rooms"])
 def add_room(data: RoomCreate):
-    """Add a new room (admin only)."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -395,7 +311,6 @@ def add_room(data: RoomCreate):
 
 @app.delete("/api/rooms/{room_no}", tags=["Rooms"])
 def delete_room(room_no: str):
-    """Delete a room (admin only)."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -409,13 +324,8 @@ def delete_room(room_no: str):
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  FEES
-# ═══════════════════════════════════════════════
-
 @app.get("/api/fees", tags=["Fees"])
 def get_all_fees():
-    """Return all fee records joined with student info."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -432,7 +342,6 @@ def get_all_fees():
         for fee in fees:
             if fee.get("date_paid"):
                 fee["date_paid"] = str(fee["date_paid"])
-            # Convert decimals to float for JSON serialisation
             fee["total_fee"]   = float(fee["total_fee"])
             fee["amount_paid"] = float(fee["amount_paid"])
             fee["due_balance"] = float(fee["due_balance"])
@@ -444,7 +353,6 @@ def get_all_fees():
 
 @app.get("/api/fees/{roll_no}", tags=["Fees"])
 def get_student_fees(roll_no: str):
-    """Return fee record for one specific student."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -475,7 +383,6 @@ def get_student_fees(roll_no: str):
 
 @app.put("/api/fees/{receipt_id}", tags=["Fees"])
 def update_fee_payment(receipt_id: str, data: FeeUpdate):
-    """Record a payment against a receipt (admin only)."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -483,20 +390,16 @@ def update_fee_payment(receipt_id: str, data: FeeUpdate):
         row = cursor.fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Receipt not found")
-
         new_status = "Paid" if data.amount_paid >= float(row["total_fee"]) else "Pending"
         cursor.execute(
             """UPDATE fees SET amount_paid=%s, payment_mode=%s, status=%s,
                date_paid=CURDATE() WHERE receipt_id=%s""",
             (data.amount_paid, data.payment_mode, new_status, receipt_id)
         )
-        # Sync fee_status on students table too
-        roll = row
-        if roll:
-            cursor.execute(
-                "UPDATE students SET fee_status=%s WHERE roll_no=%s",
-                (new_status, roll["roll_no"])
-            )
+        cursor.execute(
+            "UPDATE students SET fee_status=%s WHERE roll_no=%s",
+            (new_status, row["roll_no"])
+        )
         conn.commit()
         return {"success": True, "message": f"Payment updated. Status: {new_status}"}
     finally:
@@ -504,13 +407,8 @@ def update_fee_payment(receipt_id: str, data: FeeUpdate):
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  COMPLAINTS
-# ═══════════════════════════════════════════════
-
 @app.get("/api/complaints", tags=["Complaints"])
 def get_all_complaints():
-    """Return all complaints (admin sees all, student filters by roll_no via query param)."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -527,7 +425,6 @@ def get_all_complaints():
 
 @app.get("/api/complaints/student/{roll_no}", tags=["Complaints"])
 def get_student_complaints(roll_no: str):
-    """Return complaints filed by a specific student."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -547,7 +444,6 @@ def get_student_complaints(roll_no: str):
 
 @app.post("/api/complaints", tags=["Complaints"])
 def submit_complaint(data: ComplaintRequest):
-    """Student submits a new complaint. Saved to DB with status=Pending."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -566,7 +462,6 @@ def submit_complaint(data: ComplaintRequest):
 
 @app.put("/api/complaints/{complaint_id}", tags=["Complaints"])
 def update_complaint_status(complaint_id: int, data: ComplaintStatusUpdate):
-    """Admin updates a complaint status (Pending → In Progress → Resolved)."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -585,7 +480,6 @@ def update_complaint_status(complaint_id: int, data: ComplaintStatusUpdate):
 
 @app.delete("/api/complaints/{complaint_id}", tags=["Complaints"])
 def delete_complaint(complaint_id: int):
-    """Delete a complaint record."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -599,13 +493,8 @@ def delete_complaint(complaint_id: int):
         conn.close()
 
 
-# ═══════════════════════════════════════════════
-#  NOTICES
-# ═══════════════════════════════════════════════
-
 @app.get("/api/notices", tags=["Notices"])
 def get_all_notices():
-    """Return all hostel notices for the student notice board."""
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
@@ -622,7 +511,6 @@ def get_all_notices():
 
 @app.post("/api/notices", tags=["Notices"])
 def add_notice(data: NoticeCreate):
-    """Admin posts a new notice."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
@@ -639,7 +527,6 @@ def add_notice(data: NoticeCreate):
 
 @app.delete("/api/notices/{notice_id}", tags=["Notices"])
 def delete_notice(notice_id: int):
-    """Admin deletes a notice."""
     conn = get_connection()
     cursor = conn.cursor()
     try:
